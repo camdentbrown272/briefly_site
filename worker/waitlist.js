@@ -20,6 +20,9 @@
  */
 
 const ALLOWED_ORIGINS = new Set([
+  'https://brieflysite.com',
+  'https://www.brieflysite.com',
+  // The old domain, kept until it is redirected or retired.
   'https://gro-usa.com',
   'https://www.gro-usa.com',
   'http://localhost:4321', // local dev
@@ -30,7 +33,7 @@ const MAX_BODY = 8 * 1024; // a signup or a request is never this big
 
 function corsHeaders(origin) {
   return {
-    'Access-Control-Allow-Origin': ALLOWED_ORIGINS.has(origin) ? origin : 'https://gro-usa.com',
+    'Access-Control-Allow-Origin': ALLOWED_ORIGINS.has(origin) ? origin : 'https://brieflysite.com',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400',
@@ -60,7 +63,7 @@ Fifteen posts a day about entrepreneurship, business, and making money.
 Then it stops.
 
 — Briefly
-https://gro-usa.com
+https://brieflysite.com
 `;
 
 // Inline styles and a table layout, because email clients strip <style> blocks
@@ -85,7 +88,7 @@ const confirmationHtml = `<!doctype html>
           Then it stops.
         </td></tr>
         <tr><td style="border-top:1px solid rgba(21,22,15,0.13);padding-top:16px;font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#8a8c80;">
-          <a href="https://gro-usa.com" style="color:#8a8c80;text-decoration:none;">gro-usa.com</a>
+          <a href="https://brieflysite.com" style="color:#8a8c80;text-decoration:none;">brieflysite.com</a>
         </td></tr>
       </table>
     </td></tr>
@@ -183,10 +186,10 @@ async function handleRequest(data, env, cors) {
   const payload = {
     to,
     subject,
-    text: `${body}\n\n—\nFrom: ${from || 'not given'}\nvia gro-usa.com`,
+    text: `${body}\n\n—\nFrom: ${from || 'not given'}\nvia brieflysite.com`,
     html:
       `<p style="font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#15160f;white-space:pre-wrap;">${escapeHtml(body)}</p>` +
-      `<p style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#8a8c80;">From: ${escapeHtml(from || 'not given')}<br>via gro-usa.com</p>`,
+      `<p style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#8a8c80;">From: ${escapeHtml(from || 'not given')}<br>via brieflysite.com</p>`,
   };
 
   // Only set reply_to when they actually gave a usable address.

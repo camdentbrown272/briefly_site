@@ -114,7 +114,7 @@ Files and their OFL licenses are in `public/fonts/`.
 
 ## Deploying
 
-Deployed to GitHub Pages at **https://gro-usa.com** by
+Deployed to GitHub Pages at **https://brieflysite.com** by
 `.github/workflows/deploy.yml`, which runs on every push to `main`.
 
 Pages must be set to **Settings → Pages → Source → GitHub Actions**. On the default

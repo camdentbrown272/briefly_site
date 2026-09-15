@@ -5,5 +5,5 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   // Drives canonical URLs and social share metadata.
   // The matching public/CNAME is what tells GitHub Pages to serve this domain.
-  site: 'https://gro-usa.com',
+  site: 'https://brieflysite.com',
 });
