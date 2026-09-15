@@ -14,7 +14,7 @@
  *
  * Everything else lives in wrangler.jsonc, because `wrangler deploy`
  * overwrites dashboard variables:
- *   FROM         sender, e.g.  Briefly <hello@gro-usa.com>
+ *   FROM         sender, e.g.  Briefly <hello@brieflysite.com>
  *   REQUEST_TO   where feature requests land
  *   SEGMENT_ID   optional Resend segment to file contacts under
  */
@@ -115,7 +115,7 @@ async function sendEmail(env, payload) {
       Authorization: `Bearer ${env.RESEND_API_KEY}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ from: env.FROM || 'Briefly <hello@gro-usa.com>', ...payload }),
+    body: JSON.stringify({ from: env.FROM || 'Briefly <hello@brieflysite.com>', ...payload }),
   });
 }
 
