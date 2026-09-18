@@ -88,7 +88,7 @@ in the Worker's logs: Cloudflare dashboard → your Worker → **Logs**.
 SPF and DKIM come from Resend's domain verification. Worth adding a **DMARC**
 TXT record at GoDaddy too — start at `p=none` to monitor:
 
-    _dmarc.gro-usa.com   TXT   v=DMARC1; p=none; rua=mailto:gro.foundation26@gmail.com
+    _dmarc.gro-usa.com   TXT   v=DMARC1; p=none; rua=mailto:hello@brieflysite.com
 
 It improves deliverability on its own, and it is the prerequisite for BIMI (the
 sender logo in Gmail/Apple Mail) if that is ever worth buying a certificate for.

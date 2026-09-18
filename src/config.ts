@@ -51,7 +51,7 @@ export const links = {
    * Where feature requests land. Swap this one address and the request form
    * follows — nothing else references it.
    */
-  featureRequests: 'gro.foundation26@gmail.com',
+  featureRequests: 'hello@brieflysite.com',
 } as const;
 
 /** Pre-filled subject line on a feature request. */

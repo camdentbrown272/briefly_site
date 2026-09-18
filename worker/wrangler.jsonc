@@ -16,7 +16,7 @@
   "vars": {
     "FROM": "Briefly <hello@brieflysite.com>",
     // Where the launch page's feature requests are emailed.
-    "REQUEST_TO": "gro.foundation26@gmail.com",
+    "REQUEST_TO": "hello@brieflysite.com",
     // Optional. Contacts are saved either way — this only files them under a
     // named segment. Resend's Audiences are deprecated, so there is nothing to
     // create before the Worker works.
