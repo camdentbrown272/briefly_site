@@ -39,7 +39,7 @@
   --paper-sunk: #efeae1;
   --ink: #15160f;
   --ink-soft: #4c4e44;
-  --ink-faint: #8a8c80;
+  --ink-faint: #676960; /* 4.5:1+ on every light surface (WCAG AA) */
   --rule: rgba(21, 22, 15, 0.13);
   --rule-strong: rgba(21, 22, 15, 0.28);
   --accent: #2f5d3f;
@@ -65,7 +65,7 @@
     --paper-sunk: #0a0b0a;
     --ink: #eeebe2;
     --ink-soft: #aaada1;
-    --ink-faint: #767970;
+    --ink-faint: #82857b; /* 4.5:1+ on every dark surface (WCAG AA) */
     --rule: rgba(238, 235, 226, 0.14);
     --rule-strong: rgba(238, 235, 226, 0.32);
     --accent: #86c795;
@@ -195,4 +195,22 @@ a {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Hidden until focused with the keyboard, then shown top-left. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 10;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 1rem;
 }

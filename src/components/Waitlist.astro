@@ -29,6 +29,7 @@ const {
       inputmode="email"
       autocomplete="email"
       placeholder="you@email.com"
+      aria-describedby={`note-${source} message-${source}`}
       required
     />
     <!-- Honeypot: real people leave this empty. -->
@@ -39,8 +40,8 @@ const {
     </button>
   </form>
 
-  <p class="note">{note} <a href="/privacy/#waitlist">What we keep</a></p>
-  <p class="message" role="status" aria-live="polite"></p>
+  <p class="note" id={`note-${source}`}>{note} <a href="/privacy/#waitlist">What we keep</a></p>
+  <p class="message" id={`message-${source}`} role="status" aria-live="polite"></p>
 </div>
 
 <style>
@@ -72,7 +73,7 @@ const {
   }
 
   .input:focus {
-    outline: none;
+    outline: 2px solid transparent;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px var(--accent-wash);
   }
@@ -243,7 +244,9 @@ const {
       if (root.dataset.state === 'pending') return;
 
       const email = input.value.trim();
+      input.removeAttribute('aria-invalid');
       if (!EMAIL.test(email)) {
+        input.setAttribute('aria-invalid', 'true');
         set('error', 'That email looks off — mind checking it?');
         input.focus();
         return;
