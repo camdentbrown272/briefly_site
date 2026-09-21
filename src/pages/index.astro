@@ -67,26 +67,26 @@ const steps = [
     <section class="section hero">
       <div class="wrap hero__inner">
         <div class="hero__copy">
-        <p class="eyebrow">In development</p>
-        <h1 class="hero__title">A feed<br />that ends.</h1>
-        <p class="lede hero__lede">
+        <p class="eyebrow" data-reveal style="--i:0">In development</p>
+        <h1 class="hero__title" data-reveal style="--i:1">A feed<br />that ends.</h1>
+        <p class="lede hero__lede" data-reveal style="--i:2">
           {site.name} is fifteen posts a day about entrepreneurship, business, and making money. Read
           them, close the app, go back to work. There is nothing after the fifteenth card &mdash; no
           infinite scroll, no algorithm quietly learning what keeps you here.
         </p>
 
-        <div class="hero__form">
+        <div class="hero__form" data-reveal style="--i:3">
           <Waitlist source="hero" />
         </div>
 
-        <ul class="facts">
-          <li class="fact"><strong>15</strong><span>posts a day</span></li>
+        <ul class="facts" data-reveal style="--i:4">
+          <li class="fact"><strong data-ticker="15">15</strong><span>posts a day</span></li>
           <li class="fact"><strong>0</strong><span>ads or algorithms</span></li>
           <li class="fact"><strong>{product.price}</strong><span>one-time purchase</span></li>
         </ul>
         </div>
 
-        <div class="hero__device">
+        <div class="hero__device" data-reveal style="--i:3">
           <PhoneFrame shot={heroShot} eager />
         </div>
       </div>
@@ -101,8 +101,8 @@ const steps = [
           <p class="eyebrow">The premise</p>
         </div>
         <div class="split__main">
-          <h2>Every other feed is built to never end.</h2>
-          <div class="prose">
+          <h2 data-reveal>Every other feed is built to never end.</h2>
+          <div class="prose" data-reveal style="--i:1">
             <p>
               That is not a bug in the design, it is the design. The longer you stay, the more time
               you lose on the thing you were actually trying to build. So you open an app to learn
@@ -121,11 +121,11 @@ const steps = [
     <section class="section band">
       <div class="wrap">
         <p class="eyebrow">What&rsquo;s in the fifteen</p>
-        <h2 class="band__title">Three kinds of card. Nothing else.</h2>
+        <h2 class="band__title" data-reveal>Three kinds of card. Nothing else.</h2>
         <ol class="pillars">
           {
             pillars.map((pillar, index) => (
-              <li class="pillar">
+              <li class="pillar" data-reveal style={`--i:${index}`}>
                 <span class="pillar__num">{String(index + 1).padStart(2, '0')}</span>
                 <h3>{pillar.title}</h3>
                 <p>{pillar.body}</p>
@@ -140,7 +140,7 @@ const steps = [
     <section class="section">
       <div class="wrap">
         <p class="eyebrow">A look at it</p>
-        <h2 class="centered-title">Open it, finish it, leave.</h2>
+        <h2 class="centered-title" data-reveal>Open it, finish it, leave.</h2>
         {
           awaitingShots && import.meta.env.DEV && (
             <p class="devnote">
@@ -155,7 +155,13 @@ const steps = [
           )
         }
         <div class="shots">
-          {shots.map((shot) => <PhoneFrame shot={shot} />)}
+          {
+            shots.map((shot, index) => (
+              <div class="shot" data-reveal style={`--i:${index}`}>
+                <PhoneFrame shot={shot} />
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
@@ -169,16 +175,19 @@ const steps = [
           <p class="eyebrow">How the day works</p>
         </div>
         <div class="split__main">
-          <ol class="steps">
+          <div class="timeline">
+            <span class="timeline__beam" aria-hidden="true"></span>
+            <ol class="steps">
             {
               steps.map((step) => (
-                <li class="step">
+                <li class="step" data-reveal>
                   <h3>{step.title}</h3>
                   <p>{step.body}</p>
                 </li>
               ))
             }
           </ol>
+          </div>
         </div>
       </div>
     </section>
@@ -190,14 +199,14 @@ const steps = [
           <p class="eyebrow">Requests</p>
         </div>
         <div class="split__main">
-          <h2>Want something in it?</h2>
-          <div class="prose">
+          <h2 data-reveal>Want something in it?</h2>
+          <div class="prose" data-reveal style="--i:1">
             <p>
               Tell us what would make {site.name} worth opening, or who you want writing on it.
               Write it here and it goes straight to us.
             </p>
           </div>
-          <FeatureRequest />
+          <div data-reveal style="--i:2"><FeatureRequest /></div>
         </div>
       </div>
     </section>
@@ -209,8 +218,8 @@ const steps = [
           <p class="eyebrow">Straight up</p>
         </div>
         <div class="split__main">
-          <h2>Where the writing comes from.</h2>
-          <div class="prose">
+          <h2 data-reveal>Where the writing comes from.</h2>
+          <div class="prose" data-reveal style="--i:1">
             <p>
               Right now the cards are AI-generated, built on real-world ideologies and real
               attributed quotes &mdash; and every single one says so on its face. We would rather
@@ -229,8 +238,8 @@ const steps = [
     <!-- ------------------------------------------------------ final CTA -->
     <section class="section closer">
       <div class="wrap closer__inner">
-        <h2 class="closer__title">Fifteen a day.<br />Then you&rsquo;re done.</h2>
-        <div class="closer__form">
+        <h2 class="closer__title" data-reveal>Fifteen a day.<br />Then you&rsquo;re done.</h2>
+        <div class="closer__form" data-reveal style="--i:1">
           <Waitlist source="footer" />
         </div>
       </div>
@@ -268,6 +277,107 @@ const steps = [
     </div>
   </footer>
 </Base>
+
+<script>
+  const motion = document.documentElement.classList.contains('motion');
+  const canObserve = 'IntersectionObserver' in window;
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // Blur fade: reveal each marked element once, as it enters the viewport.
+  const reveals = document.querySelectorAll<HTMLElement>('[data-reveal]');
+  if (!motion || !canObserve) {
+    reveals.forEach((el) => el.classList.add('is-in'));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-in');
+          io.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+    );
+    reveals.forEach((el) => io.observe(el));
+  }
+  clearTimeout((window as unknown as { __revealFallback?: number }).__revealFallback);
+
+  // Number ticker: count up once, easing out. The real value is in the HTML,
+  // so without motion nothing changes.
+  if (motion && canObserve) {
+    document.querySelectorAll<HTMLElement>('[data-ticker]').forEach((el) => {
+      const target = Number(el.dataset.ticker);
+      el.textContent = '0';
+      const io = new IntersectionObserver(([entry]) => {
+        if (!entry?.isIntersecting) return;
+        io.disconnect();
+        const start = performance.now() + 450;
+        const tick = (now: number) => {
+          const t = Math.min(1, Math.max(0, (now - start) / 1400));
+          const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+          el.textContent = String(Math.round(target * eased));
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+      io.observe(el);
+    });
+  }
+
+  if (motion && finePointer) {
+    // Spotlight: feed the cursor position to each pillar's glow.
+    document.querySelectorAll<HTMLElement>('.pillar').forEach((card) => {
+      card.addEventListener('pointermove', (event) => {
+        const box = card.getBoundingClientRect();
+        card.style.setProperty('--x', `${event.clientX - box.left}px`);
+        card.style.setProperty('--y', `${event.clientY - box.top}px`);
+      });
+    });
+
+    // 3D tilt: lean each gallery phone a few degrees toward the cursor.
+    document.querySelectorAll<HTMLElement>('.shot').forEach((shot) => {
+      const phone = shot.querySelector<HTMLElement>('.phone__body');
+      if (!phone) return;
+      shot.addEventListener('pointermove', (event) => {
+        const box = phone.getBoundingClientRect();
+        const x = (event.clientX - box.left) / box.width - 0.5;
+        const y = (event.clientY - box.top) / box.height - 0.5;
+        phone.style.transform = `perspective(900px) rotateY(${x * 10}deg) rotateX(${y * -8}deg)`;
+      });
+      shot.addEventListener('pointerleave', () => {
+        phone.style.transform = '';
+      });
+    });
+  }
+
+  // Tracing beam: the line fills as you scroll through the day, and each
+  // step's marker lights when the line reaches it.
+  const timeline = document.querySelector<HTMLElement>('.timeline');
+  if (timeline && motion) {
+    const steps = timeline.querySelectorAll<HTMLElement>('.step');
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const line = innerHeight * 0.62;
+      const box = timeline.getBoundingClientRect();
+      const progress = Math.min(1, Math.max(0, (line - box.top) / box.height));
+      timeline.style.setProperty('--progress', progress.toFixed(3));
+      steps.forEach((step) => {
+        step.classList.toggle('is-lit', step.getBoundingClientRect().top + 12 < line);
+      });
+    };
+    const schedule = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    };
+    addEventListener('scroll', schedule, { passive: true });
+    addEventListener('resize', schedule);
+    update();
+  } else if (timeline) {
+    timeline.querySelectorAll('.step').forEach((step) => step.classList.add('is-lit'));
+  }
+</script>
 
 <style>
   /* --- masthead --- */
@@ -314,7 +424,53 @@ const steps = [
 
   /* --- hero --- */
   .hero {
+    position: relative;
+    isolation: isolate;
     padding-block: clamp(3rem, 8vw, 6rem) clamp(4rem, 10vw, 7rem);
+  }
+
+  /* Dot pattern: texture, not decoration — it fades out long before the
+     text, so it never sits behind anything you have to read. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(var(--dot) 1px, transparent 1.3px);
+    background-size: 22px 22px;
+    -webkit-mask-image: radial-gradient(ellipse 55% 70% at 78% 45%, #000 20%, transparent 72%);
+    mask-image: radial-gradient(ellipse 55% 70% at 78% 45%, #000 20%, transparent 72%);
+  }
+
+  /* Border beam: a slow light tracing the hero phone's frame. */
+  :global(.motion) .hero__device :global(.phone__body)::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1.5px;
+    pointer-events: none;
+    background: conic-gradient(
+      from var(--beam-angle),
+      transparent 0deg 290deg,
+      var(--accent) 335deg,
+      transparent 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    animation: beam 9s linear infinite;
+  }
+
+  @keyframes beam {
+    to {
+      --beam-angle: 360deg;
+    }
   }
 
   .hero__inner {
@@ -372,6 +528,7 @@ const steps = [
   }
 
   .fact strong {
+    font-variant-numeric: tabular-nums;
     font-family: var(--font-display);
     font-weight: 400;
     font-size: 2rem;
@@ -451,7 +608,9 @@ const steps = [
     margin: 3.5rem 0 0;
     padding: 0;
     display: grid;
-    gap: 2.5rem;
+    /* Each pillar carries its own padding for the spotlight glow, so the
+       stacked mobile gap can be small. */
+    gap: 0.75rem;
   }
 
   @media (min-width: 46rem) {
@@ -461,12 +620,50 @@ const steps = [
     }
   }
 
+  /* Spotlight card: a soft glow follows the cursor across each pillar.
+     The negative margin buys room for the glow without moving the text. */
   .pillar {
+    position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
-    padding-top: 1.25rem;
+    padding: 1.25rem 1rem 1.5rem;
+    margin-inline: -1rem;
+    border-radius: 0 0 14px 14px;
+  }
+
+  .pillar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    inset-inline: 1rem;
     border-top: 1px solid var(--rule-strong);
+    transition: border-color 0.35s ease;
+  }
+
+  .pillar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(
+      240px circle at var(--x, 50%) var(--y, 0%),
+      var(--accent-wash),
+      transparent 70%
+    );
+  }
+
+  .pillar:hover::before {
+    border-color: var(--accent);
+  }
+
+  :global(.motion) .pillar:hover::after {
+    opacity: 1;
   }
 
   .pillar__num {
@@ -493,6 +690,16 @@ const steps = [
     align-items: start;
   }
 
+  /* 3D tilt: the gallery phones lean toward the cursor. */
+  :global(.motion) .shot :global(.phone__body) {
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: transform;
+  }
+
+  :global(.motion) .shot:hover :global(.phone__body) {
+    transition-duration: 0.15s;
+  }
+
   .devnote {
     margin-top: 1.5rem;
     max-width: var(--measure);
@@ -509,7 +716,68 @@ const steps = [
     font-size: 0.95em;
   }
 
-  /* --- steps --- */
+  /* --- steps: tracing beam --- */
+  .timeline {
+    --progress: 1;
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  :global(.motion) .timeline {
+    --progress: 0;
+  }
+
+  .timeline::before,
+  .timeline__beam {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 0.7rem;
+    bottom: 0.7rem;
+    width: 1px;
+  }
+
+  .timeline::before {
+    background: var(--rule-strong);
+  }
+
+  .timeline__beam {
+    background: linear-gradient(to bottom, transparent, var(--accent) 12%);
+    box-shadow: 0 0 10px var(--accent);
+    transform-origin: top;
+    transform: scaleY(var(--progress));
+  }
+
+  .step {
+    position: relative;
+  }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    left: calc(-2rem);
+    top: calc(1.75rem + 0.3rem);
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    transition:
+      background 0.4s ease,
+      border-color 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+
+  .step:first-child::before {
+    top: 0.3rem;
+  }
+
+  .step.is-lit::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-wash);
+  }
+
   .steps {
     list-style: none;
     margin: 0;

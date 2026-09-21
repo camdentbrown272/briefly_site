@@ -45,6 +45,7 @@
   --accent: #2f5d3f;
   --accent-ink: #fffdf9;
   --accent-wash: #e6ede4;
+  --dot: rgba(21, 22, 15, 0.17);
   --shadow: 0 1px 2px rgba(21, 22, 15, 0.05), 0 12px 34px -14px rgba(21, 22, 15, 0.22);
 
   --font-mono: 'Cutive Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -71,6 +72,7 @@
     --accent: #86c795;
     --accent-ink: #0d140f;
     --accent-wash: rgba(134, 199, 149, 0.12);
+    --dot: rgba(238, 235, 226, 0.13);
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -16px rgba(0, 0, 0, 0.7);
 
     color-scheme: dark;
@@ -213,4 +215,36 @@ a {
 
 .skip-link:focus {
   top: 1rem;
+}
+
+/* ---------------------------------------------------------------
+   Motion. Everything below only applies once the head script has
+   added .motion, so reduced-motion visitors and no-JS visitors see
+   the page fully drawn and still.
+   --------------------------------------------------------------- */
+
+/* Blur fade: elements settle in once as they reach the viewport. */
+.motion [data-reveal] {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(14px);
+  transition:
+    opacity 0.8s ease,
+    filter 0.8s ease,
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+
+.motion [data-reveal].is-in,
+.reveal-all [data-reveal] {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+
+/* Drives the border beam's rotation. */
+@property --beam-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
 }

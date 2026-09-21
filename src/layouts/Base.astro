@@ -18,6 +18,16 @@ const ogImage = new URL('/og-image.png', Astro.site ?? Astro.url);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Motion is opt-in: only visitors who have not asked for reduced motion
+         get it, and a failsafe reveals everything if the page script never runs. -->
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('motion');
+        window.__revealFallback = setTimeout(function () {
+          document.documentElement.classList.add('reveal-all');
+        }, 2500);
+      }
+    </script>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96" />

@@ -96,6 +96,38 @@ const {
     opacity: 0.88;
   }
 
+  /* Shimmer: one sweep of light shortly after load, and again on hover or
+     keyboard focus. Never loops on its own. */
+  .button {
+    overflow: hidden;
+  }
+
+  .button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.38) 50%, transparent 65%);
+    transform: translateX(-120%);
+    pointer-events: none;
+  }
+
+  /* The load-time sweep only fills backwards, so once it ends the stripe
+     rests off-button and hover can move it with a plain transition — and
+     leaving the button never restarts the animation. */
+  :global(.motion) .button::after {
+    animation: shimmer-once 1.3s ease 1.4s backwards;
+  }
+
+  :global(.motion) .button:hover::after,
+  :global(.motion) .button:focus-visible::after {
+    transform: translateX(120%);
+    transition: transform 0.9s ease;
+  }
+
+  @keyframes shimmer-once {
+    to { transform: translateX(120%); }
+  }
+
   .button:active {
     transform: translateY(1px);
   }
