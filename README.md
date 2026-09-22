@@ -82,18 +82,21 @@ export const shots: readonly Shot[] = [
 Any slot left at `src: null` renders a labeled placeholder frame, so the page never looks broken
 mid-swap.
 
-## Price and feature requests
+## Launch offer and feature requests
 
 Both live in `src/config.ts`:
 
-- `product.price` (`'$2.99'`) drives the "one-time purchase" stat under the hero CTA.
+- `product.launchOffer` / `launchOfferDetail` (`'Free'` / `'to join at launch'`) drive the third
+  hero stat. Deliberately no dollar figure — the post-launch App Store price is not decided, and
+  this only promises the free launch window, which stays true regardless of what the price
+  becomes later. If you do fix a price, say so in the Terms first (`src/content/terms.html`),
+  not here — the site should never state a number the legal text doesn't back up.
 - `links.featureRequests` is the address the request form sends to. The form composes the
   message in-page and only hands off to the visitor's mail app on the final click, with the
   subject (`featureRequestSubject`) pre-filled. Change the address and nothing else needs touching.
 
-The CTA joins a waitlist — it does not take payment. The price is shown up front as a stat so
-nobody is surprised later. To sell directly you'd point the button at a Stripe Payment Link or
-Gumroad instead.
+The CTA joins a waitlist — it does not take payment. To sell directly you'd point the button at a
+Stripe Payment Link or Gumroad instead.
 
 ## Everything else you'd want to change
 

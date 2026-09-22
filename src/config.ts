@@ -36,9 +36,14 @@ export const waitlistEndpoint = 'https://gro-waitlist.grolaunch.workers.dev';
  */
 export const waitlistEncoding: 'json' | 'form' = 'json';
 
-/** Shown up front on every call to action. Change it here and it updates everywhere. */
+/**
+ * Shown up front on every call to action. Deliberately no dollar figure — the
+ * post-launch price is not decided, and this only ever promises the free
+ * launch window, which is fixed regardless of what the price becomes later.
+ */
 export const product = {
-  price: '$2.99',
+  launchOffer: 'Free',
+  launchOfferDetail: 'to join at launch',
 } as const;
 
 export const links = {
